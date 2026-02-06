@@ -31,37 +31,10 @@ The Razor Pages web app lets you upload any image and get an instant prediction 
 dotnet run --project SafetyDetector.Web
 ```
 
-<!-- ![Demo Screenshot](assets/demo_screenshot.png) -->
+<img width="1178" height="805" alt="image" src="https://github.com/user-attachments/assets/de348570-e51f-4729-9320-44111bfdec17" />
 
 ---
 
-## ✨ How It Works
-
-```
-Input Image (JPEG/PNG)
-       |
-       v
-  ┌─────────────────────────────────────┐
-  │  LoadRawImageBytes                  │
-  │  Read file into byte[]             │
-  └─────────────────────────────────────┘
-       |
-       v
-  ┌─────────────────────────────────────┐
-  │  ResNet V2 50 Backbone              │
-  │  Bottleneck feature extraction      │
-  │  (frozen, pre-trained on ImageNet)  │
-  └─────────────────────────────────────┘
-       |
-       v
-  ┌─────────────────────────────────────┐
-  │  Retrained Final Layer              │
-  │  Custom classifier for 2 classes    │
-  └─────────────────────────────────────┘
-       |
-       v
-  "Hard Hat" or "No Hard Hat" + confidence %
-```
 
 ### Training Strategy
 
