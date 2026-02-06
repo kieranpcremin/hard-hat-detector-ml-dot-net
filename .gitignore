@@ -1,0 +1,44 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.vs/
+.vs/
+
+# NuGet
+*.nupkg
+packages/
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training data (too large for git)
+data/
+
+# Trained model (too large for git ~100-200MB)
+**/MLModel/*.zip
+*.zip
+
+# TensorFlow cache
+tmp/
+inception/
+resnet_v2_*/
+
+# Claude Code
+.claude/
+
+# Learning notes (personal, not for repo)
+learningnotes.md
+
+# Misc
+*.log
+*.tmp
+nul

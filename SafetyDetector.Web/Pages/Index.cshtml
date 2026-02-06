@@ -1,0 +1,151 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Hard Hat Detector";
+}
+
+<div class="detector-container">
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold">Hard Hat Detector</h1>
+        <p class="lead text-muted">Upload an image to detect if a person is wearing a hard hat.</p>
+        <p class="text-muted">Powered by <strong>ML.NET</strong> with ResNet V2 50 transfer learning.</p>
+    </div>
+
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> @Model.ErrorMessage
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Upload Section -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Upload Image</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="imageFile" class="form-label">Choose an image (JPEG or PNG)</label>
+                            <input class="form-control" type="file" id="imageFile" name="imageFile"
+                                   accept=".jpg,.jpeg,.png" onchange="previewImage(this)" />
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            Analyze Image
+                        </button>
+                    </form>
+
+                    @if (Model.UploadedImageBase64 != null)
+                    {
+                        <div class="mt-3 text-center">
+                            <img src="@Model.UploadedImageBase64" class="img-fluid rounded uploaded-image"
+                                 alt="Uploaded image" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mt-3 text-center" id="imagePreview">
+                            <div class="placeholder-box">
+                                <span class="text-muted">Image preview will appear here</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Results</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.HasPrediction)
+                    {
+                        <!-- Main prediction -->
+                        @if (Model.IsHardHat)
+                        {
+                            <div class="alert alert-success text-center fs-4 fw-bold">
+                                HARD HAT DETECTED
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger text-center fs-4 fw-bold">
+                                NO HARD HAT DETECTED
+                            </div>
+                        }
+
+                        <!-- Confidence -->
+                        <div class="mb-4">
+                            <h6>Confidence</h6>
+                            <div class="display-6 text-center fw-bold">
+                                @((Model.Confidence * 100).ToString("F1"))%
+                            </div>
+                        </div>
+
+                        <!-- Probability breakdown -->
+                        @if (Model.Probabilities != null)
+                        {
+                            <h6>Probabilities</h6>
+                            @foreach (var kvp in Model.Probabilities)
+                            {
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span>@kvp.Key</span>
+                                        <span class="fw-bold">@((kvp.Value * 100).ToString("F1"))%</span>
+                                    </div>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar @(kvp.Key == "hard_hat" ? "bg-success" : "bg-danger")"
+                                             role="progressbar"
+                                             style="width: @(kvp.Value * 100)%">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-5">
+                            <p class="fs-5">Upload an image to see results</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About section -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>About This Model</h5>
+            <ul class="mb-0">
+                <li><strong>Framework:</strong> ML.NET with transfer learning</li>
+                <li><strong>Architecture:</strong> ResNet V2 50 (pre-trained on ImageNet)</li>
+                <li><strong>Classes:</strong> Hard Hat, No Hard Hat</li>
+                <li><strong>Training:</strong> Bottleneck feature extraction + final layer retraining</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var preview = document.getElementById('imagePreview');
+                    if (preview) {
+                        preview.innerHTML = '<img src="' + e.target.result + '" class="img-fluid rounded uploaded-image" alt="Preview" />';
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
