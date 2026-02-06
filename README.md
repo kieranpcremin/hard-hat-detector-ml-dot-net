@@ -8,7 +8,7 @@
 [![Accuracy](https://img.shields.io/badge/Val_Accuracy-91.8%25-brightgreen)](#-results)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> This is the **.NET version** of my [hard-hat-detector](https://github.com/kieranpcremin/hard-hat-detector) project (Python/PyTorch). Same problem, different stack - demonstrating versatility across ecosystems.
+> This is the **.NET version** of my [hard-hat-detector](https://github.com/kieranpcremin/hard-hat-detector) project (Python/PyTorch). Same problem, different stack.
 
 ---
 
